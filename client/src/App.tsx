@@ -75,7 +75,7 @@ const platformOptions = [
 ];
 
 const MainApp = () => {
-  const { user, refreshUser } = useAuth();
+  const { user, refreshUser, login } = useAuth();
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<GenerateResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -116,19 +116,32 @@ const MainApp = () => {
   }, [user?.preferences]);
 
   const handleSubmit = async (values: GenerateRequest) => {
+    // Check if user is authenticated
+    if (!user) {
+      setError("Please log in to generate posts");
+      notifications.show({
+        title: "Authentication Required",
+        message: "Please log in to generate posts",
+        color: "red",
+        icon: <IconAlertCircle size={16} />,
+      });
+      return;
+    }
+
     setLoading(true);
     setError(null);
     setResult(null);
 
     try {
       // Parse hashtags from comma-separated string if needed
-      const hashtags =
-        typeof values.hashtags === "string"
-          ? values.hashtags
-              .split(",")
-              .map((h) => h.trim())
-              .filter((h) => h.length > 0)
-          : values.hashtags;
+      const hashtags = Array.isArray(values.hashtags)
+        ? values.hashtags
+        : typeof values.hashtags === "string"
+        ? (values.hashtags as string)
+            .split(",")
+            .map((h: string) => h.trim())
+            .filter((h: string) => h.length > 0)
+        : [];
 
       const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3001";
       const response = await fetch(`${apiUrl}/api/generate`, {
@@ -300,9 +313,28 @@ const MainApp = () => {
                     leftSection={<IconSend size={16} />}
                     size="md"
                     mt="md"
+                    disabled={!user}
                   >
                     {loading ? "Generating Posts..." : "Generate Posts"}
                   </Button>
+
+                  {!user && (
+                    <Alert
+                      icon={<IconAlertCircle size={16} />}
+                      title="Login Required"
+                      color="blue"
+                      variant="light"
+                      mt="sm"
+                    >
+                      <Text size="sm" mb="xs">
+                        Please log in with Google to generate posts and save
+                        them to your history.
+                      </Text>
+                      <Button size="xs" variant="filled" onClick={login}>
+                        Login with Google
+                      </Button>
+                    </Alert>
+                  )}
                 </Stack>
               </form>
             </Paper>

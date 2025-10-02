@@ -1,6 +1,6 @@
 import express from 'express';
 import { isDatabaseConnected } from '../config/database.js';
-import { optionalAuth } from '../config/passport.js';
+import { ensureAuthenticated } from '../config/passport.js';
 import { Post } from '../models/Post.js';
 import { ArticleService } from '../services/articleService.js';
 import { OpenAIService } from '../services/openaiService.js';
@@ -12,7 +12,7 @@ const router = express.Router();
  * POST /api/generate
  * Generate social media posts from a URL
  */
-router.post('/generate', optionalAuth, async (req, res) => {
+router.post('/generate', ensureAuthenticated, async (req, res) => {
   try {
     // Validate request body
     const validation = validateGenerateRequest(req.body);
@@ -48,9 +48,9 @@ router.post('/generate', optionalAuth, async (req, res) => {
       cta
     });
 
-    // Step 3: Save to database if user is authenticated and database is connected
+    // Step 3: Save to database (user is guaranteed to be authenticated)
     let postId = null;
-    if (req.user && isDatabaseConnected()) {
+    if (isDatabaseConnected()) {
       try {
         const post = new Post({
           userId: req.user._id,
