@@ -4,6 +4,7 @@ import { ensureAuthenticated } from '../config/passport.js';
 import { Post } from '../models/Post.js';
 import { ArticleService } from '../services/articleService.js';
 import { OpenAIService } from '../services/openaiService.js';
+import { OpenRouterService } from '../services/openrouterService.js';
 import { validateGenerateRequest } from '../utils/validation.js';
 
 const router = express.Router();
@@ -38,9 +39,12 @@ router.post('/generate', ensureAuthenticated, async (req, res) => {
       });
     }
 
-    // Step 2: Generate posts using OpenAI
-    const openaiService = new OpenAIService();
-    const generatedContent = await openaiService.generatePosts({
+    // Step 2: Generate posts using AI service (OpenAI or OpenRouter)
+    const aiService = process.env.AI_SERVICE === 'openrouter' 
+      ? new OpenRouterService() 
+      : new OpenAIService();
+    
+    const generatedContent = await aiService.generatePosts({
       articleData,
       tone,
       platforms,
@@ -113,7 +117,7 @@ router.post('/generate', ensureAuthenticated, async (req, res) => {
       });
     }
     
-    if (error.message.includes('OpenAI')) {
+    if (error.message.includes('OpenAI') || error.message.includes('OpenRouter')) {
       return res.status(500).json({
         error: 'AI service error',
         message: 'Failed to generate posts. Please try again later.'

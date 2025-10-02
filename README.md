@@ -5,7 +5,7 @@ Transform any article URL into engaging, platform-specific social media posts us
 ## 🚀 Features
 
 - **Smart Article Parsing**: Extracts clean content from any web article using Mozilla Readability
-- **AI-Powered Generation**: Uses OpenAI GPT-4o-mini to create engaging, platform-specific posts
+- **AI-Powered Generation**: Uses OpenAI or OpenRouter to create engaging, platform-specific posts
 - **Multi-Platform Support**: Generate posts for Twitter, LinkedIn, and Instagram
 - **Google OAuth Authentication**: Secure login with Google accounts
 - **User Profiles & Preferences**: Save default settings and track usage statistics
@@ -38,7 +38,7 @@ Postify/
 - **Node.js** with Express
 - **MongoDB** with Mongoose for data persistence
 - **Google OAuth 2.0** with Passport.js for authentication
-- **OpenAI API** (GPT-4o-mini)
+- **OpenAI API** or **OpenRouter** (GPT-4o-mini and 100+ other models)
 - **Mozilla Readability** for article parsing
 - **JSDOM** for HTML processing
 - **Express Rate Limit** for API protection
@@ -51,7 +51,7 @@ Postify/
 - Node.js 18+
 - pnpm (recommended) or npm
 - MongoDB (local or MongoDB Atlas)
-- OpenAI API key
+- OpenAI API key OR OpenRouter API key
 - Google OAuth credentials (for authentication)
 
 ### 1. Clone and Install
@@ -82,8 +82,15 @@ cp env.example .env
 Edit `.env` with your configuration:
 
 ```env
-# OpenAI API Configuration
+# AI Service Configuration
+AI_SERVICE=openrouter  # or 'openai'
+
+# OpenAI Configuration (if using OpenAI)
 OPENAI_API_KEY=your_openai_api_key_here
+
+# OpenRouter Configuration (if using OpenRouter)
+OPENROUTER_API_KEY=your_openrouter_api_key_here
+OPENROUTER_MODEL=openai/gpt-4o-mini
 
 # Rate Limiting Configuration
 RATE_LIMIT_RPM=10
@@ -208,7 +215,9 @@ Generate social media posts from a URL.
 
 3. **Environment Variables**:
    ```
-   OPENAI_API_KEY=your_key_here
+   AI_SERVICE=openrouter
+   OPENROUTER_API_KEY=your_key_here
+   OPENROUTER_MODEL=openai/gpt-4o-mini
    RATE_LIMIT_RPM=10
    CLIENT_URL=https://your-frontend-url.vercel.app
    NODE_ENV=production
@@ -226,6 +235,19 @@ Generate social media posts from a URL.
 3. **Environment Variables**: Same as Railway above
 
 ## 🔧 Configuration
+
+### AI Service Selection
+
+Choose between OpenAI and OpenRouter by setting `AI_SERVICE=openai` or `AI_SERVICE=openrouter` in your environment.
+
+**OpenRouter Benefits:**
+
+- Access to 100+ AI models (OpenAI, Anthropic, Google, Meta, etc.)
+- Competitive pricing and transparent costs
+- Automatic failover and load balancing
+- Detailed usage analytics
+
+For detailed OpenRouter setup instructions, see [OPENROUTER_INTEGRATION.md](./OPENROUTER_INTEGRATION.md).
 
 ### Rate Limiting
 
@@ -318,4 +340,4 @@ For issues and questions:
 
 ---
 
-**Built with ❤️ using React, Express, and OpenAI**
+**Built with ❤️ using React, Express, OpenAI, and OpenRouter**

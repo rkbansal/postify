@@ -10,20 +10,21 @@
     "build": "echo 'No build step needed for Node.js'"
   },
   "dependencies": {
-    "express": "^4.19.2",
-    "cors": "^2.8.5",
-    "helmet": "^7.1.0",
-    "express-rate-limit": "^7.4.0",
-    "openai": "^4.57.0",
     "@mozilla/readability": "^0.5.0",
-    "jsdom": "^25.0.0",
-    "dotenv": "^16.4.5",
-    "mongoose": "^8.7.0",
-    "passport": "^0.7.0",
-    "passport-google-oauth20": "^2.0.0",
-    "express-session": "^1.18.0",
     "connect-mongo": "^5.1.0",
-    "jsonwebtoken": "^9.0.2"
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.4.0",
+    "express-session": "^1.18.0",
+    "helmet": "^7.1.0",
+    "jsdom": "^25.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.7.0",
+    "node-fetch": "^3.3.2",
+    "openai": "^4.57.0",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.14.0"
