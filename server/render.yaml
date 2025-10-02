@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: postify-server
+    env: node
+    plan: starter
+    buildCommand: pnpm install
+    startCommand: pnpm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: RATE_LIMIT_RPM
+        value: 10
+      - key: CLIENT_URL
+        sync: false
